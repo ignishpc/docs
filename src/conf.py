@@ -123,3 +123,6 @@ texinfo_documents = [
 
 # Output file base name for ePub builder.
 epub_basename = package
+
+# Suppress "WARNING: unknown mimetype for ..." when building EPUB.
+suppress_warnings = ["epub.unknown_project_files"]
