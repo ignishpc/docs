@@ -1,0 +1,12 @@
+version: 2
+
+sphinx:
+   configuration: src/conf.py
+   fail_on_warning: true
+
+formats: all
+
+python:
+   version: "3.9"
+   install:
+     - requirements: requirements.txt
