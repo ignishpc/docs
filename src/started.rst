@@ -22,6 +22,7 @@ Therefore, the minimum requirements to run Ignis are:
      the execution of IgnisHPC and its dependencies.
   3. Pip: The IgnisHPC deploy script is available as a pip package, although it can be downloaded from source, 
      this is the quickest and easiest way.
+  4. Git (optional): The git binary is required for building IgnisHPC images from repositories.
    
    
 ------------

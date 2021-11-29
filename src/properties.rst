@@ -1,6 +1,6 @@
-===================
+==========
 Properties
-===================
+==========
 
 IgnisHPC properties control most of the application settings and are configured separately for each application. Properties can be defined dynamically in the driver code, in the submitter script or as an environment variable. Default values are stored in both cases in ``/opt/ignis/etc/ignis.conf``.
 
@@ -55,9 +55,9 @@ In case of multiple definitions of the same variable, the following priority lis
 \* There are two different files in the driver and submitter, and each one only stores the default values for its module. Note that IgnisHPC does not define any default value outside the configuration files, which allows users to know the values of all the system variables. Therefore, values can be modified but never deleted.
 
 
------------------
+-------------
 Property list
------------------
+-------------
 
 Base Properties
 ^^^^^^^^^^^^^^^
@@ -97,7 +97,7 @@ Job Properties
 
 
 Distributed Filesystem (DFS) Properties
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 +-------------------------------+---------+---------+----------+------------------------------------------------------+
 | Name                          | Type    | Default | Context  | Description                                          |
 +===============================+=========+=========+==========+======================================================+
@@ -155,7 +155,7 @@ Driver Properties
 |                               |         |         |          | .                                                    |
 +-------------------------------+---------+---------+----------+------------------------------------------------------+
 | ignis.driver.bind.{cpath}     | Path    |         | Driver   | Driver: binds a container path ``cpath`` to a host   |
-|                               |         |         |          | path. Add ':ro' for read-only.              |
+|                               |         |         |          | path. Add ':ro' for read-only.                       |
 +-------------------------------+---------+---------+----------+------------------------------------------------------+
 | ignis.driver.volume.{cpath}   | String  |         | Driver   | Driver: Creates a volume in the path with value size |
 |                               |         |         |          | in Bytes, might use prefixes (K, M, G, ...) or       |
@@ -254,7 +254,7 @@ Partition Properties
 | ignis.partition.minimal       | String  | 128MB   | Executor | Minimum partition size from file.                    |
 +-------------------------------+---------+---------+----------+------------------------------------------------------+
 | ignis.partition.compression   | Integer | 0       | Executor | Storage zlib compresion level. Available for         |
-|                               |         |         |          | ``RawMemory`` and ``Disk``. (0-9)                     |
+|                               |         |         |          | ``RawMemory`` and ``Disk``. (0-9)                    |
 +-------------------------------+---------+---------+----------+------------------------------------------------------+
 | ignis.partition.serialization | String  | native  | Executor | Type of serialization with executors of the same     |
 |                               |         |         |          | language.                                            |
