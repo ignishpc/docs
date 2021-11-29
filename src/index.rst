@@ -4,8 +4,13 @@ IgnisHPC
 .. only:: html or man
 
    :Authors:   César Pomar, Juan Carlos Pichel
-   :Contact:  cesaralfredo.pineiro@usc.es, jcpichel@usc.es
+   :Contact:  cesaralfredo.pineiro@usc.es, juancarlos.pichel@usc.es
    :Date:     |today|
+   
+.. image:: _static/img/ignis-hpc.svg
+   :target: index.html
+   :width: 128
+   :alt: IgnisHPC logo
 
 .. topic:: Abstract
 
@@ -24,4 +29,7 @@ IgnisHPC
    :caption: Contents
    :maxdepth: 2
 
+   started
+   deploy
+   schedulers
    properties

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Creator: CorelDRAW 2021 (64-Bit) -->
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="256px" height="256px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-viewBox="0 0 256 256"
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="64px" height="64px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 64 64"
  xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
  <defs>
-  <font id="FontID0" horiz-adv-x="826" font-variant="normal" style="fill-rule:nonzero" font-style="normal" font-weight="400">
+  <font id="FontID0" horiz-adv-x="826" font-variant="normal" style="fill-rule:nonzero" font-weight="400">
 	<font-face 
 		font-family="Cooper Black">
 		<font-face-src>
@@ -20,9 +20,9 @@ viewBox="0 0 256 256"
   </font>
   <style type="text/css">
    <![CDATA[
-    @font-face { font-family:"Cooper Black";font-variant:normal;font-style:normal;font-weight:normal;src:url("#FontID0") format(svg)}
-    .str1 {stroke:#1F1B20;stroke-width:2.36;stroke-linejoin:round;stroke-miterlimit:22.9256}
-    .str0 {stroke:#1F1B20;stroke-width:2.36;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1145.92}
+    @font-face { font-family:"Cooper Black";font-variant:normal;font-weight:normal;src:url("#FontID0") format(svg)}
+    .str1 {stroke:#1F1B20;stroke-width:0.59;stroke-linejoin:round;stroke-miterlimit:22.9256}
+    .str0 {stroke:#1F1B20;stroke-width:0.59;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1145.92}
     .fil6 {fill:#FEFEFE}
     .fil0 {fill:#1F1B20}
     .fil3 {fill:url(#id0)}
@@ -30,34 +30,34 @@ viewBox="0 0 256 256"
     .fil5 {fill:url(#id2)}
     .fil2 {fill:url(#id3)}
     .fil4 {fill:url(#id4)}
-    .fnt0 {font-weight:normal;font-size:12.68px;font-family:'Cooper Black'}
+    .fnt0 {font-weight:normal;font-size:3.17px;font-family:'Cooper Black'}
    ]]>
   </style>
-  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="77.97" y1="217.01" x2="115.51" y2="20.12">
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="19.49" y1="54.25" x2="28.88" y2="5.03">
    <stop offset="0" style="stop-opacity:1; stop-color:blue"/>
    <stop offset="0.431373" style="stop-opacity:1; stop-color:#265EFF"/>
    <stop offset="1" style="stop-opacity:1; stop-color:#4CBDFF"/>
   </linearGradient>
-  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="29.53" y1="179.5" x2="59.88" y2="90.21">
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="7.38" y1="44.87" x2="14.97" y2="22.55">
    <stop offset="0" style="stop-opacity:1; stop-color:blue"/>
    <stop offset="0.431373" style="stop-opacity:1; stop-color:#0051FF"/>
    <stop offset="1" style="stop-opacity:1; stop-color:#00A2FF"/>
   </linearGradient>
-  <linearGradient id="id2" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="155.91" y1="211.54" x2="193.03" y2="41.19">
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="38.98" y1="52.89" x2="48.26" y2="10.3">
   </linearGradient>
-  <linearGradient id="id3" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="62.89" y1="177.81" x2="101.26" y2="64.02">
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="15.72" y1="44.45" x2="25.32" y2="16.01">
   </linearGradient>
-  <linearGradient id="id4" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="152.4" y1="191.5" x2="188.05" y2="74.38">
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="38.1" y1="47.87" x2="47.01" y2="18.6">
   </linearGradient>
  </defs>
  <g id="Capa_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <circle class="fil0" cx="128" cy="128" r="128"/>
-  <path class="fil1 str0" d="M64.84 85.53c-0.15,1.78 0.35,3.68 -0.35,5.26 -0.9,2.04 -2.25,4.01 -3.57,5.98 -1.33,1.99 -2.63,3.99 -3.44,6.06 -15.6,40.26 -11.42,68.36 7.51,81.35 -26.36,-0.05 -38.51,-12.27 -40.57,-35.06 2.36,5.78 7.81,12.9 12.73,13.18 -0.2,-16.9 1.58,-31.39 5.34,-43.49 -6.99,3.79 -10.87,9.45 -14.95,14.71 5.06,-18.42 17.6,-34.59 37.3,-47.99z"/>
-  <path class="fil2 str1" d="M103.93 100.94c-27.29,6.03 -49.52,27.92 -37.51,58.78 1.38,3.55 5.64,4.53 9.73,6.05 2.41,0.23 5.12,-1.75 6.64,-3.57 9.43,-11.2 13.32,-16.2 -1.4,-9.8 -2.77,1.2 -5.42,0.29 -8.87,0.46 -1.96,-6.36 -1.38,-11.64 1.75,-15.84 11.98,2.35 23.25,0 33.82,-7.06 -1.26,35.93 -12.11,53.7 -32.52,53.71 -24.74,-15.83 -23.38,-40.63 -10.13,-82.92 6.29,-20.08 10.89,-21.37 19.92,-28.55 4.05,-3.21 8.8,-9.13 13.67,-14.04 4.15,14.15 5.76,28.4 4.9,42.78z"/>
-  <path class="fil3 str1" d="M129.06 113.28c43.56,86.35 -69.27,106.7 -106.39,55.32 12.52,22.32 25.89,41.48 42.69,47.72 35.57,13.22 69.37,-15.65 91.28,-48.65 20.33,-30.63 15.83,-62.19 4.96,-92.18 -2.12,-5.85 -15.84,-25.29 -16.15,-25.83 -7.64,-13.4 -4.18,-15.24 -18.99,-32.14 0.56,9.97 -7.5,28.75 -7.69,29.2 -6.67,16.49 32.13,26.14 31.35,69.39 -2.65,-18.73 -17.24,-39.51 -43.69,-62.18 14.24,66.8 12.63,111.79 -12.47,130.12 12.98,0.2 20.95,-2.55 23.78,-8.53 10.51,-12.75 14.28,-33.49 11.32,-62.24z"/>
-  <path class="fil4 str1" d="M190.05 143.63c-5.78,17.94 -21.7,35.01 -48.93,52.68 37.16,-31.23 45.53,-72.36 22.87,-126.74 24.66,15.04 36.21,28.81 35.28,41.57 -7.15,-7.33 -12.39,-10.42 -14.56,-11.11 2.5,24.72 1.83,41.16 -1.9,49.31 -0.28,0.88 1.82,-0.08 7.24,-5.71z"/>
-  <path class="fil5 str1" d="M117.79 214.73c54.47,-19.95 85.41,-52.27 75.8,-93.03 8.24,0.95 14.26,3.52 18.94,7.88 -0.5,-7.36 2.25,-28.62 -22.37,-48.01 -17.8,-14.02 -42.25,-39.96 -43.36,-42.47 -1.32,-3 5.22,-0.06 23.21,11.16 4.76,2.97 17.59,8.19 21.74,10 14.75,6.43 23.32,13.71 28.62,26.16 -0.82,0.72 -8.45,-10.5 -32.5,-19.26 36.3,27.22 53.74,59.32 36.71,94.41 -2.47,-6.85 -6.77,-11.78 -12.69,-13.26 -5.88,50.32 -37.9,61.83 -94.1,66.42z"/>
-  <text x="79.41" y="125.34"  class="fil6 fnt0">HPC</text>
+  <circle class="fil0" cx="32" cy="32" r="32"/>
+  <path class="fil1 str0" d="M16.21 21.38c-0.04,0.45 0.09,0.92 -0.09,1.32 -0.22,0.51 -0.56,1 -0.89,1.49 -0.33,0.5 -0.66,1 -0.86,1.52 -3.9,10.06 -2.85,17.09 1.88,20.33 -6.59,-0.01 -9.63,-3.06 -10.14,-8.76 0.58,1.45 1.95,3.22 3.18,3.3 -0.05,-4.23 0.39,-7.85 1.33,-10.88 -1.75,0.95 -2.72,2.37 -3.74,3.68 1.27,-4.6 4.4,-8.65 9.33,-12z"/>
+  <path class="fil2 str1" d="M25.98 25.24c-6.82,1.5 -12.38,6.97 -9.38,14.69 0.35,0.89 1.42,1.13 2.44,1.51 0.6,0.06 1.28,-0.44 1.66,-0.89 2.36,-2.8 3.33,-4.05 -0.35,-2.45 -0.69,0.3 -1.36,0.07 -2.22,0.12 -0.49,-1.59 -0.34,-2.91 0.44,-3.97 2.99,0.59 5.81,0 8.45,-1.76 -0.31,8.98 -3.02,13.42 -8.13,13.43 -6.18,-3.96 -5.84,-10.16 -2.53,-20.73 1.57,-5.02 2.72,-5.35 4.98,-7.14 1.01,-0.8 2.2,-2.28 3.42,-3.51 1.04,3.54 1.44,7.1 1.22,10.7z"/>
+  <path class="fil3 str1" d="M32.26 28.32c10.89,21.59 -17.31,26.68 -26.59,13.83 3.13,5.58 6.47,10.37 10.67,11.93 8.89,3.3 17.34,-3.91 22.82,-12.16 5.08,-7.66 3.96,-15.55 1.24,-23.05 -0.53,-1.46 -3.96,-6.32 -4.04,-6.46 -1.91,-3.35 -1.04,-3.81 -4.75,-8.03 0.15,2.49 -1.87,7.19 -1.92,7.3 -1.66,4.12 8.04,6.53 7.84,17.35 -0.66,-4.68 -4.31,-9.88 -10.92,-15.55 3.56,16.7 3.15,27.95 -3.12,32.53 3.24,0.05 5.24,-0.64 5.95,-2.13 2.62,-3.19 3.56,-8.37 2.82,-15.56z"/>
+  <path class="fil4 str1" d="M47.51 35.91c-1.44,4.48 -5.42,8.75 -12.23,13.17 9.29,-7.81 11.38,-18.09 5.72,-31.69 6.16,3.76 9.05,7.2 8.82,10.4 -1.79,-1.84 -3.1,-2.61 -3.64,-2.78 0.62,6.18 0.46,10.29 -0.48,12.33 -0.07,0.21 0.46,-0.02 1.81,-1.43z"/>
+  <path class="fil5 str1" d="M29.45 53.68c13.61,-4.99 21.35,-13.07 18.95,-23.26 2.06,0.24 3.56,0.88 4.73,1.97 -0.12,-1.84 0.57,-7.15 -5.59,-12 -4.45,-3.5 -10.56,-9.99 -10.84,-10.62 -0.33,-0.74 1.31,-0.01 5.8,2.8 1.19,0.74 4.4,2.04 5.44,2.5 3.68,1.6 5.83,3.42 7.15,6.54 -0.2,0.17 -2.11,-2.63 -8.12,-4.82 9.07,6.81 13.43,14.83 9.18,23.6 -0.62,-1.71 -1.7,-2.94 -3.18,-3.31 -1.47,12.58 -9.47,15.45 -23.52,16.6z"/>
+  <text x="19.85" y="31.34"  class="fil6 fnt0">HPC</text>
  </g>
 </svg>

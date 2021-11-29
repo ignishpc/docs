@@ -1,5 +1,5 @@
 ===================
-IgnisHPC Properties
+Properties
 ===================
 
 IgnisHPC properties control most of the application settings and are configured separately for each application. Properties can be defined dynamically in the driver code, in the submitter script or as an environment variable. Default values are stored in both cases in ``/opt/ignis/etc/ignis.conf``.

@@ -66,7 +66,7 @@ except ImportError:
 html_theme = (
     'sphinx_rtd_theme' if sphinx_rtd_theme is not None else 'default'
 )
-html_logo = "_static/img/ignis-hpc.svg"
+html_logo = "_static/img/ignis-hpc-small.svg"
 html_favicon = '_static/img/favicon.ico'
 html_theme_options = {
     'logo_only': False,
@@ -93,7 +93,7 @@ htmlhelp_basename = f'{package}-man'
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    ('index', f'{package}.tex', project, " \and ".join(authors), 'howto'),
+    ('index', f'{package}.tex', project, " and ".join(authors), 'howto'),
 ]
 
 latex_elements = {
