@@ -21,7 +21,7 @@ package = 'ignishpc'
 project = 'IgnisHPC'
 release = '2.0'
 version = '2.0.0'
-authors = ['César Pomar', 'Juan Carlos Pichel']
+authors = ['César Piñeiro', 'Juan C. Pichel']
 copyright = f'{_today.year}, {", ".join(authors)}'
 
 
