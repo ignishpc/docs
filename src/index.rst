@@ -23,6 +23,7 @@ IgnisHPC
    :maxdepth: 2
 
    started
-   deploy
+   api
    schedulers
    properties
+   deploy

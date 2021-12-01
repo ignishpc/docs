@@ -90,7 +90,7 @@ Nomad
 
 Master node::
 
- $ ignis-deploy nomad start --password 1234
+ $ ignis-deploy nomad start --password 1234 --volumes <working-directory-path\*>
 
 Worker nodes::
 
