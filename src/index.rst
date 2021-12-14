@@ -1,5 +1,5 @@
 IgnisHPC
-==============
+========
 
 .. image:: _static/img/ignis-hpc.svg
    :align: right
@@ -24,6 +24,5 @@ IgnisHPC
 
    started
    api
-   schedulers
+   images
    properties
-   deploy

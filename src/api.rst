@@ -425,23 +425,108 @@ IDataFrame
 
 The class :class:`IDataFrame` represents a parallel collection of elements distributed among the worker executors. All 
 functions defined within this class process the elements in a parallel and distributed way.
-
+	
 
 .. class:: IDataFrame
 
     .. class:: T
         
         Represents the type associated with the parallel collection. Dynamic languages do not have to make it visible 
-        to the user, it is the input value type for most of the functions defined in :class:`IDataFrame`
+        to the user, it is the input value type for most of the functions defined in :class:`IDataFrame`.
     
 
     .. method:: setName(name)
 
         Sets or changes the name associated with the :class:`IDataFrame`. The new name will affect only 
-        this :class:`IDataFrame` and future tasks created.
+        this :class:`IDataFrame` and future tasks created from it.
         
-        :param String name: New name.    
+        :param String name: New name.  
 
+    .. method:: persist(cacheLevel)
+	
+        Sets a cache level for the data so that it only needs to be computed once.
+		
+        :param ICacheLevel cacheLevel: level of cache.
+		
+    .. method:: cache(cacheLevel)
+	
+        Sets a cache level :class:`ICacheLevel.PRESERVE` for the data so that it only needs to be computed once.
+
+    .. method:: unpersist()
+	
+        The data cache is disabled. Alias for :class:`IDataFrame.uncahe`.
+		
+    .. method:: uncahe()
+	
+        The data cache is disabled. Alias for :class:`IDataFrame.unpersist`.
+		
+    .. method:: partitions()
+	    
+        Gets the number of partitions. 
+	
+        :return: Number of partitions.
+        :rtype: Integer.
+		
+	.. method:: saveAsObjectFile(path, compression)
+	
+	    Saves the data as binary files.
+	
+	    :param String path: path to store the data.
+		:param Integer compression: compresion level (0-9).
+		
+	.. method:: saveAsTextFile(path)
+	
+	    Saves the data as text files.
+	
+	    :param String path: path to store the data.
+		
+	.. method:: saveAsJsonFile(path, pretty)
+	
+	    Saves the data as json files.
+	
+	    :param String path: path to store the data.
+	    :param Boolean pretty: uses an ident format instead of compact.
+		
+	.. method:: repartition(numPartitions)
+	
+	    Creates a new Dataframe with a fixes number of partitions.
+	
+	    :param Integer numPartitions: number of partitions.
+	    :return: A Dataframe with ``numPartitions``.
+	    :rtype: IDataFrame(T).
+
+		
+.. class:: ICacheLevel
+
+    .. py:data:: NO_CACHE
+	    :type: int
+		:value: 0
+		
+		The data cache is disabled.
+
+    .. py:data:: PRESERVE
+	    :type: int
+		:value: 1
+		
+		The data will be cached in the same storage in which it is stored.
+
+    .. py:data:: MEMORY
+	    :type: int
+		:value: 2
+		
+		The data will be cached on memory storage.
+
+    .. py:data:: RAW_MEMORY
+	    :type: int
+		:value: 3
+		
+		The data will be cached on raw memory storage.
+
+    .. py:data:: DISK
+	    :type: int
+		:value: 4
+		
+		The data will be cached on disk storage.
 
 IDriverException
 ^^^^^^^^^^^^^^^^
