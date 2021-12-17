@@ -25,6 +25,15 @@ BasicType Reference
 .. class:: Json
 
     References a json type, each language implements it in a different way.
+    
+    
+.. class:: Pair(K, V)
+
+    References a combination of key-value types stored together as a pair.
+    
+    :param K: Key type.
+    :param V: Value type.
+
 
 .. class:: List(T)
 
@@ -38,6 +47,12 @@ BasicType Reference
     
     :param K: Key type.
     :param V: Value type.
+
+.. class:: Iterable(T)
+
+    References a collection capable of returning its members one at a time.
+    
+    :param T: Element type.
 
 ------
 Driver
@@ -247,6 +262,8 @@ Typically the following format should be available:
         
         :param String name: Parameter name.
         :param value: Value to be stored in the parameter, can have any type.
+        :return: This ISource instance.
+        :rtype: ISource
 
 IWorker
 ^^^^^^^
@@ -276,7 +293,7 @@ of executor processes.
     .. method:: destroy()
 
         Destroys all processes associated with the worker. Future executions will have to start the processes again. 
-        Destroying the executors means deleting cached data in memory, only disk cache will be kept.
+        Destroying the executors means deleting cached elements in memory, only disk cache will be kept.
 
 
     .. method:: getCluster()
@@ -296,7 +313,7 @@ of executor processes.
        Creates a :class:`IDataFrame` from an existing collection present in the driver. The elements present in the collection 
        are distributed to the executors for a parallel processing.
        
-       :param List(T) data: A collection object present in the driver.
+       :param Iterable(T) data: A collection object present in the driver.
        :param Integer partitions: How many partitions the collection elements will be divided. For optimal processing, there 
          should be at least one partition for all cores on each of the executors.
        :param ISource src: (Optional) Auxiliary function to configure executor, its use may vary between languages. 
@@ -384,17 +401,19 @@ of executor processes.
 
     .. method:: execute(src)
     
-        Runs a `IVoidFunction0` in the executors. 
+        Runs a function in the executors. 
         
-        :param ISource src: Function to be executed, it must implement `IVoidFunction0` interface.
+        :param src: Function to be executed.
+        :type src: IIVoidFunction0 or ISource
 
 
     .. method:: executeTo(src)
 
-        Runs a `IFunction0` in the executors. 
+        Runs a function in the executors and generates a parallel collection. 
         
-        :param ISource src: Function to be executed, it must implement `IFunction0` interface.
-        :return: A parallel collection created with the elements returned by ``src`` function.
+        :param ISource src: Function to be executed.
+        :type src: IFunction0 or ISource
+        :return: A parallel collection created with the elements returned by the function.
         :rtype: IDataFrame(T).
 
     .. method:: call(src, data)
@@ -403,9 +422,10 @@ of executor processes.
         will generate a parallel collection. Note, this function is designed to execute functions in format *name*, it 
         does not allow to use the other formats.
         
-        :param ISource src: Function name and its arguments. It must implement `IFunction` interface if ``data`` is supplied
+        :param src: Function name and its arguments. It must implement `IFunction` interface if ``data`` is supplied
          or `IFunction0` otherwise. 
-        :param IDataFrame(T) data: (Optional) A parallel collection of data to be processed by the ``src`` function.
+        :type src: IFunction or IFunction0 or ISource
+        :param IDataFrame(T) data: (Optional) A parallel collection of elements to be processed by the ``src`` function.
         :return: A parallel collection created with the elements returned by ``src`` function.
         :rtype: IDataFrame(T).
 
@@ -417,7 +437,8 @@ of executor processes.
         :param ISource src: Function name and its arguments. It must implement `IVoidFunction` interface if ``data`` is supplied or
          `IVoidFunction0` otherwise. Note, this function is designed to execute functions in format *name*, it does not allow to use 
          the other formats.
-        :param IDataFrame(T) data: (Optional) A parallel collection of data to be processed by the ``src`` function.
+        :type src: IVoidFunction or IVoidFunction0 or ISource
+        :param IDataFrame(T) data: (Optional) A parallel collection of elements to be processed by the ``src`` function.
 
 
 IDataFrame
@@ -425,9 +446,9 @@ IDataFrame
 
 The class :class:`IDataFrame` represents a parallel collection of elements distributed among the worker executors. All 
 functions defined within this class process the elements in a parallel and distributed way.
-	
+    
 
-.. class:: IDataFrame
+.. class:: IDataFrame(T)
 
     .. class:: T
         
@@ -443,90 +464,594 @@ functions defined within this class process the elements in a parallel and distr
         :param String name: New name.  
 
     .. method:: persist(cacheLevel)
-	
-        Sets a cache level for the data so that it only needs to be computed once.
-		
+    
+        Sets a cache level for elements so that it only needs to be computed once.
+        
         :param ICacheLevel cacheLevel: level of cache.
-		
+        
     .. method:: cache(cacheLevel)
-	
-        Sets a cache level :class:`ICacheLevel.PRESERVE` for the data so that it only needs to be computed once.
+    
+        Sets a cache level :class:`ICacheLevel.PRESERVE` for elements so that it only needs to be computed once.
 
     .. method:: unpersist()
-	
-        The data cache is disabled. Alias for :class:`IDataFrame.uncahe`.
-		
+    
+        Elements cache is disabled. Alias for :class:`IDataFrame.uncahe`.
+        
     .. method:: uncahe()
-	
-        The data cache is disabled. Alias for :class:`IDataFrame.unpersist`.
-		
+    
+        Elements cache is disabled. Alias for :class:`IDataFrame.unpersist`.
+        
     .. method:: partitions()
-	    
+        
         Gets the number of partitions. 
-	
+    
         :return: Number of partitions.
         :rtype: Integer.
-		
-	.. method:: saveAsObjectFile(path, compression)
-	
-	    Saves the data as binary files.
-	
-	    :param String path: path to store the data.
-		:param Integer compression: compresion level (0-9).
-		
-	.. method:: saveAsTextFile(path)
-	
-	    Saves the data as text files.
-	
-	    :param String path: path to store the data.
-		
-	.. method:: saveAsJsonFile(path, pretty)
-	
-	    Saves the data as json files.
-	
-	    :param String path: path to store the data.
-	    :param Boolean pretty: uses an ident format instead of compact.
-		
-	.. method:: repartition(numPartitions)
-	
-	    Creates a new Dataframe with a fixes number of partitions.
-	
-	    :param Integer numPartitions: number of partitions.
-	    :return: A Dataframe with ``numPartitions``.
-	    :rtype: IDataFrame(T).
+        
+    .. method:: saveAsObjectFile(path, compression)
+    
+        Saves elements as binary files.
+    
+        :param String path: path to store the data.
+        :param Integer compression: compresion level (0-9).
+        :exception IDriverException: An error is generated if files exists or cannot be write.
+        
+    .. method:: saveAsTextFile(path)
+    
+        Saves elements as text files.
+    
+        :param String path: path to store the data.
+        :exception IDriverException: An error is generated if files exists or cannot be write.
+        
+    .. method:: saveAsJsonFile(path, pretty)
+    
+        Saves elements as json files.
+    
+        :param String path: path to store the data.
+        :param Boolean pretty: uses an ident format instead of compact.
+        :exception IDriverException: An error is generated if files exists or cannot be write.
+        
+    .. method:: repartition(numPartitions, preserveOrdering, global)
+    
+        Creates a new Dataframe with a fixes number of partitions. 
 
-		
+        :param Integer numPartitions: number of partitions.
+        :param Boolean preserveOrdering: The order of the elements does not change.
+        :param Boolean global: Elements are balanced between different executors. If false, Elements are only balanced 
+         within each executor.
+        :return: A Dataframe with ``numPartitions``.
+        :rtype: IDataFrame(T).
+        
+    .. method:: partitionByRandom(numPartitions)
+    
+        Creates a new Dataframe with a fixes number of partitions. Elements are randomly distributed among the 
+        executors.
+
+        :param Integer numPartitions: number of partitions.
+        :return: A Dataframe with ``numPartitions``.
+        :rtype: IDataFrame(T).
+
+    .. method:: partitionByHash(numPartitions)
+    
+        Creates a new Dataframe with a fixes number of partitions. Elements are distributed using a hash function 
+        among the executors.
+
+        :param Integer numPartitions: number of partitions.
+        :return: A Dataframe with ``numPartitions``.
+        :rtype: IDataFrame(T).
+
+    .. method:: partitionBy(src, numPartitions)
+    
+        Creates a new Dataframe with a fixes number of partitions. Elements are distributed using a custom function 
+        among the executors. The same function return assigns the same partition.
+
+        :param src: Function argument.
+        :type src: IFunction(T, Integer) or ISource.
+        :param Integer numPartitions: number of partitions.
+        :return: A Dataframe with ``numPartitions``.
+        :rtype: IDataFrame(T).
+
+    .. method:: map(src)
+    
+        Performs a map operation.
+
+        :param src: Function argument.
+        :type src: IFunction(T, R) or ISource.
+        :return: A Dataframe with result elements.
+        :rtype: IDataFrame(R).
+
+    .. method:: filter(src)
+    
+        Performs a filter operation. Only items that return True will be retained.
+
+        :param src: Function argument.
+        :type src: IFunction(T, Boolean) or ISource.
+        :return: A Dataframe with result elements.
+        :rtype: IDataFrame(T).
+
+    .. method:: flatmap(src)
+    
+        Performs a flatmap operation. Like :class:`IDataFrame.map` but each element
+        can generate any number of results. 
+
+        :param src: Function argument.
+        :type src: IFunction(T, Iterable(R)) or ISource.
+        :return: A Dataframe with result elements.
+        :rtype: IDataFrame(R).
+
+    .. method:: keyBy(src)
+    
+        Assigns each element a key with the return of the function.
+
+        :param src: Function argument.
+        :type src: IFunction(T, R) or ISource.
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(R, T).
+
+    .. method:: mapPartitions(src, preservesPartitioning)
+    
+        Performs a specialized map that is called only once for each partition, elements can be accessed using an 
+        iterator.
+    
+        :param src: Function argument.
+        :type src: IFunction(IReadIterator(T), Iterable(R)) or ISource.
+        :param Boolean preservesPartitioning: Preserves partitioning
+        :return: A Dataframe with result elements.
+        :rtype: IDataFrame(R).
+
+    .. method:: mapPartitionsWithIndex(src, preservesPartitioning)
+    
+        Performs a specialized map that is called only once for each partition, elements can be accessed using an 
+        iterator. Like :class:`IDataFrame.mapPartitions` but the partition index is available as the first argument
+        of the function.
+    
+        :param src: Function argument.
+        :type src: IFunction2(Integer, IReadIterator(T), Iterable(R)) or ISource.
+        :param Boolean preservesPartitioning: Preserves partitioning
+        :return: A Dataframe with result elements.
+        :rtype: IDataFrame(R).
+
+    .. method:: mapExecutor(src)
+    
+        Performs a specialized map that is called only once for each executor, elements can be accessed using a 
+        list of lists where first list represents each partition. Function argument can be modified to add or 
+        remove values, if you want to generate other value type use :class: `IDataFrame.mapExecutorTo`.
+    
+        :param src: Function argument.
+        :type src: IVoidFunction(List(List(T))) or ISource.
+        :return: A Dataframe with result elements.
+        :rtype: IDataFrame(R).
+
+    .. method:: mapExecutorTo(src)
+    
+        Performs a specialized map that is called only once for each executor, elements can be accessed using a 
+        list of lists where first list represents each partition. A new list of lists must be returned to 
+        generate new partitions.
+    
+        :param src: Function argument.
+        :type src: IFunction(List(List(T)), List(List(R))) or ISource.
+        :return: A Dataframe with result elements.
+        :rtype: IDataFrame(R).
+
+    .. method:: groupBy(src, numPartitions)
+    
+        Groups elements that share the same key, which is obtained from the return of the function.
+    
+        :param src: Function argument.
+        :type src: IFunction(T, R)) or ISource.
+        :param Integer numPartitions: (Optional) Number of resulting partitions.
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(R, List(T)).
+
+    .. method:: sort(ascending, numPartitions)
+    
+        Sort the elements using their natural order.
+    
+        :param Boolean ascending: Allows you to choose between ascending and descending order.
+        :param Integer numPartitions: (Optional) Number of resulting partitions.
+        :return: A Dataframe  with result elements.
+        :rtype: IDataFrame(T).
+
+    .. method:: sortBy(src, ascending, numPartitions)
+    
+        Sort the elements using a custom function, that checks if the first argument is less than the second.
+    
+        :param src: Function argument.
+        :type src: IFunction2(T, T, Boolean)) or ISource.   
+        :param Boolean ascending: Allows you to choose between ascending and descending order.
+        :param Integer numPartitions: (Optional) Number of resulting partitions.
+        :return: A Dataframe  with result elements.
+        :rtype: IDataFrame(T).
+
+    .. method:: union(other, preserveOrder, src)
+    
+        Merges elements of two dataframes.
+    
+        :param IDataFrame(T) other: other dataframe.
+        :param Boolean preserveOrder: If true, the second dataframe is concatenated to the first, otherwise they are
+         mixed.
+        :param ISource src: (Optional) Auxiliary function to configure executor, its use may vary between languages. 
+         Must implement at east :class:`IBeforeFunction` interface.  
+        :return: A Dataframe  with result elements of the two dataframes.
+        :rtype: IDataFrame(T).
+
+    .. method:: distinct(numPartitions, src)
+    
+        Duplicate elements are eliminated.
+    
+        :param Integer numPartitions: Number of resulting partitions.
+        :param ISource src: (Optional) Auxiliary function to configure executor, its use may vary between languages. 
+         Must implement at east :class:`IBeforeFunction` interface.  
+        :return: A Dataframe  with result elements.
+        :rtype: IDataFrame(T).
+
+    .. method:: reduce(src)
+    
+        Accumulate the elements using a custom function, which must be associative and commutative.  
+        Like :class:`IDataFrame.treeReduce` but final accumulation is performed in a single executor.
+    
+        :param src: Function argument.
+        :type src: IFunction2(T, T, T)) or ISource.  
+        :return: Element resulting from accumulation.
+        :rtype: T
+
+    .. method:: treeReduce(src)
+    
+        Accumulate the elements using a custom function, which must be associative and commutative.  
+        Like :class:`IDataFrame.reduce` but final accumulation is performed in parallel using multiple executors.
+    
+        :param src: Function argument.
+        :type src: IFunction2(T, T, T)) or ISource.  
+        :return: Element resulting from accumulation.
+        :rtype: T
+
+    .. method:: collect()
+    
+        Retrieve all the elements.
+    
+        :return: All the elements.
+        :rtype: List(T)
+
+    .. method:: aggregate(zero, seqOp, combOp)
+    
+        Accumulate the elements using two functions, which must be associative and commutative.  
+        Like :class: IDataFrame.treeAggregate` but final accumulation is performed in a single executor.
+    
+        :param zero: Function argument to generate initial value of target type.
+        :type zero: IFunction0(R)) or ISource.  
+        :param seqOp: Function argument to accumulate the elements of each partition.
+        :type seqOp: IFunction2(T, R, R)) or ISource.  
+        :param combOp: Function argument to accumulate the results of all partitions .
+        :type combOp: IFunction2(R, R, R)) or ISource.  
+        :return: Element resulting from accumulation.
+        :rtype: R
+
+    .. method:: treeAggregate(zero, seqOp, combOp)
+    
+        Accumulate the elements using two functions, which must be associative and commutative.  
+        Like :class:`IDataFrame.aggregate` but final accumulation is performed in parallel using multiple executors.
+    
+        :param zero: Function argument to generate initial value of target type.
+        :type zero: IFunction0(R)) or ISource.  
+        :param seqOp: Function argument to accumulate the elements of each partition.
+        :type seqOp: IFunction2(T, R, R)) or ISource.  
+        :param combOp: Function argument to accumulate the results of all partitions .
+        :type combOp: IFunction2(R, R, R)) or ISource.  
+        :return: Element resulting from accumulation.
+        :rtype: R
+    .. method:: fold(zero, src)
+    
+        Accumulate the elements using a initial value and custom function, which must be associative and commutative.  
+        Like :class:`IDataFrame.treeFold` but final accumulation is performed in a single executor.
+    
+        :param zero: Function argument to generate initial value of target type.
+        :type zero: IFunction0(R)) or ISource.  
+        :param src: Function argument to accumulate.
+        :type src: IFunction2(T, T, T)) or ISource.  
+        :return: Element resulting from accumulation.
+        :rtype: T
+
+    .. method:: treeFold(zero, src)
+    
+        Accumulate the elements using a initial value and custom function, which must be associative and commutative.  
+        Like :class:`IDataFrame.treeFold` but final accumulation is performed in parallel using multiple executors.
+    
+        :param zero: Function argument to generate initial value of target type.
+        :type zero: IFunction0(R)) or ISource.  
+        :param src: Function argument to accumulate.
+        :type src: IFunction2(T, T, T)) or ISource.  
+        :return: Element resulting from accumulation.
+        :rtype: T
+
+    .. method:: take(num)
+    
+        Retrieves the first ``num`` elements.
+    
+        :param Integer num: Number of elements.
+        :return: First ``num`` elements.
+        :rtype: List(T).
+
+    .. method:: foreach(src)
+    
+        Calls a custom function once for each element.
+    
+        :param src: Function argument.
+        :type src: IVoidFunction(T) or ISource.
+
+    .. method:: foreachPartition(src)
+    
+        Calls a custom function once for each partition, elements can be accessed using an iterator.
+    
+        :param src: Function argument.
+        :type src: IVoidFunction(IReadIterator(T)) or ISource.
+
+    .. method:: foreachExecutor(src)
+    
+        Calls a custom function once for each executor, elements can be accessed using a list of lists where first list
+        represents each partition.
+    
+        :param src: Function argument.
+        :type src: IVoidFunction(List(List(T))) or ISource.
+
+    .. method:: top(num, cmp)
+    
+        Retrieves the first ``num`` elements in descending order. A custom function can be used to checks if the first
+        argument is less than the second
+        
+        :param Integer num: Number of elements.
+        :param cmp: (Optional) Comparator to be used instead of the natural order.
+        :type cmp: IFunction2(T, T, Boolean)) or ISource.  
+        :return: First ``num`` elements.
+        :rtype: List(T)
+
+    .. method:: takeOrdered(num, cmp)
+    
+        Retrieves the first ``num`` elements in ascending order. A custom function can be used to checks if the first
+        argument is less than the second
+        
+        :param Integer num: Number of elements.
+        :param cmp: (Optional) Comparator to be used instead of the natural order.
+        :type cmp: IFunction2(T, T, Boolean)) or ISource.
+        :return: First ``num`` elements.
+        :rtype: List(T)
+
+    .. method:: sample(withReplacement, fraction, seed)
+    
+        Generates a random sample records from the original elements.
+    
+        :param Boolean withReplacement: An element can be selected more than once.
+        :param Float fraction: Percentage of the sample.
+        :param Integer seed: Initializes the random number generator.
+        :return: A Dataframe  with result elements.
+        :rtype: IDataFrame(T).
+
+    .. method:: takeSample(withReplacement, num, seed)
+    
+        Generates and Retrieves a random sample of ``num`` records from the original elements.
+    
+        :param Boolean withReplacement: An element can be selected more than once.
+        :param Integer num: Number of elements.
+        :param Integer seed: Initializes the random number generator.
+        :return: A Dataframe  with result elements.
+        :rtype: IDataFrame(T).
+
+    .. method:: count()
+    
+        Count the elements.
+    
+        :return: Number of elements.
+        :rtype: Integer
+
+    .. method:: max(cmp)
+    
+        Retrieves the element with the maximum value. A custom function can be used to checks if the first argument is
+        less than the second. Like :class:`Dataframe.top` with ``num=1``
+        
+        :param Integer num: Number of elements.
+        :param cmp: (Optional) Comparator to be used instead of the natural order.
+        :type cmp: IFunction2(T, T, Boolean)) or ISource.
+        :return: Element with the maximum value.
+        :rtype: T
+
+    .. method:: min(cmp)
+    
+        Retrieves the element with the minimal value. A custom function can be used to checks if the first argument is
+        less than the second. Like :class:`Dataframe.takeOrdered` with ``num=1``
+        
+        :param Integer num: Number of elements.
+        :param cmp: (Optional) Comparator to be used instead of the natural order.
+        :type cmp: IFunction2(T, T, Boolean)) or ISource  .
+        :return: Element with the minimal value.
+        :rtype: T
+
+    .. method:: toPair()
+    
+        Converts :class:`IDataFrame` to `IPairDataFrame` when :class:`IDataFrame.T` is a :class:`Pair` of
+        :class:`IPairDataFrame.K` and :class:`IPairDataFrame.V`.        
+    
+        :return: A Dataframe of pairs
+        :rtype: IPairDataFrame(K, V)
+        
+.. class:: IPairDataFrame(K, V)
+
+    Extends :class:`IDataFrame` funtionality when :class:`IDataFrame.T` is a :class:`Pair`
+
+    .. class:: K
+        
+        Represents the value type associated with the parallel collection. Dynamic languages do not have to make it visible 
+        to the user, it is the key input value type for most of the functions defined in :class:`IPairDataFrame`.
+        
+    .. class:: V
+        
+        Represents the value type associated with the parallel collection. Dynamic languages do not have to make it visible 
+        to the user, it is the value input value type for most of the functions defined in :class:`IPairDataFrame`.
+    
+
+
+    .. method:: join(other, preserveOrder, numPartitions, src)
+    
+        Joins an element of this collection with an element of ``other`` that share the same key.
+    
+        :param IPairDataFrame(K, V) other: other dataframe.
+        :param Integer numPartitions: Number of resulting partitions.
+        :param ISource src: (Optional) Auxiliary function to configure executor, its use may vary between languages. 
+         Must implement at east :class:`IBeforeFunction` interface.  
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(K, Pair(V, V)).
+
+    .. method:: flatMapValues(src)
+        
+        Performs a map function only on the values while preserving the key. Like :class:`IPairDataFrame.mapValues` but each 
+        element can generate any number of results, key is duplicated or deleted if necessary.
+
+        :param src: Function argument.
+        :type src: IFunction(V, R) or ISource.
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(K, R).
+
+    .. method:: mapValues(src)
+    
+        Performs a map function only on the values while preserving the key.
+
+        :param src: Function argument.
+        :type src: IFunction(V, R) or ISource.
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(K, R).
+
+    .. method:: groupByKey(numPartitions, src)
+    
+        Groups elements that share the same key.
+    
+        :param Integer numPartitions: Number of resulting partitions.
+        :param ISource src: (Optional) Auxiliary function to configure executor, its use may vary between languages. 
+         Must implement at east :class:`IBeforeFunction` interface.  
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(K, List(V)).
+
+    .. method:: reduceByKey(src, numPartitions, localReduce)
+    
+        Accumulate the values that share the same key using a custom function, which must be associative and 
+        commutative. 
+    
+        :param src: Function argument.
+        :type src: IFunction2(V, V, V)) or ISource.  
+        :param Integer numPartitions: Number of resulting partitions.
+        :param Boolean localReduce: Accumulate the values that share the same key in a executor before global 
+         accumulation. Reduces the size of the exchange if there are duplicated keys in multiple partitions.
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(K, V).
+
+    .. method:: aggregateByKey(zero, seqOp, combOp, numPartitions)
+    
+        Accumulate the values that share the same key using two functions, which must be associative and commutative. 
+    
+        :param zero: Function argument to generate initial value of target type.
+        :type zero: IFunction0(R)) or ISource.  
+        :param seqOp: Function argument to accumulate the values that share the same key of each partition.
+        :type seqOp: IFunction2(V, R, R)) or ISource.  
+        :param combOp: Function argument to accumulate the results that share the same key of all partitions .
+        :type combOp: IFunction2(R, R, R)) or ISource.  
+        :param Integer numPartitions: Number of resulting partitions.
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(K, V).
+
+    .. method:: foldByKey(zero, src, numPartitions, localFold)
+    
+        Accumulate the values that share the same key using a initial value and custom function, which must be 
+        associative and commutative. 
+    
+        :param zero: Function argument to generate initial value of target type.
+        :type zero: IFunction0(R)) or ISource.  
+        :param src: Function argument to accumulate.
+        :type src: IFunction2(V, V, V)) or ISource. 
+        :param Integer numPartitions: Number of resulting partitions.
+        :param Boolean localFold: Accumulate the values that share the same key in a executor before global 
+         accumulation. Reduces the size of the exchange if there are duplicated keys in multiple partitions.
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(K, V).
+
+    .. method:: sortByKey(ascending, numPartitions, src)
+    
+        Sort the keys using their natural order. 
+    
+        :param Boolean ascending: Allows you to choose between ascending and descending order.
+        :param Integer numPartitions: Number of resulting partitions.
+        :param ISource src: (Optional) Auxiliary function to configure executor, its use may vary between languages. 
+         Must implement at east :class:`IBeforeFunction` interface.  
+        :return: A Dataframe of pairs with result elements.
+        :rtype: IPairDataFrame(K, V).
+
+    .. method:: keys()
+    
+        Retrieve unique keys.
+    
+        :return: The unique keys.
+        :rtype: List(K)
+
+    .. method:: values()
+    
+        Retrieve unique values.
+    
+        :return: The unique values.
+        :rtype: List(V)
+
+    .. method:: sampleByKey(withReplacement, fractions, seed, native)
+    
+        Generates a random sample records from the values that share the same key.
+    
+        :param Boolean withReplacement: An element can be selected more than once.
+        :param Map(K, Float) fraction: Percentage of the sample by key. Absences are taken as zero.
+        :param Integer seed: Initializes the random number generator.
+        :param Boolean native: (Optional) sends ``fractions`` with native serialization.
+        :return: A Dataframe  with result elements.
+        :rtype: IDataFrame(T).  
+
+    .. method:: countByKey()
+    
+        Count unique keys.
+    
+        :return: Number unique of values.
+        :rtype: Integer
+
+    .. method:: countByValue()
+    
+        Count unique keys.
+    
+        :return: Number unique of values.
+        :rtype: Integer
+
+        
 .. class:: ICacheLevel
 
     .. py:data:: NO_CACHE
-	    :type: int
-		:value: 0
-		
-		The data cache is disabled.
+        :type: Integer
+        :value: 0
+        
+        Elements cache is disabled.
 
     .. py:data:: PRESERVE
-	    :type: int
-		:value: 1
-		
-		The data will be cached in the same storage in which it is stored.
+        :type: Integer
+        :value: 1
+        
+        Elements will be cached in the same storage in which it is stored.
 
     .. py:data:: MEMORY
-	    :type: int
-		:value: 2
-		
-		The data will be cached on memory storage.
+        :type: Integer
+        :value: 2
+        
+        Elements will be cached on memory storage.
 
     .. py:data:: RAW_MEMORY
-	    :type: int
-		:value: 3
-		
-		The data will be cached on raw memory storage.
+        :type: Integer
+        :value: 3
+        
+        Elements will be cached on raw memory storage.
 
     .. py:data:: DISK
-	    :type: int
-		:value: 4
-		
-		The data will be cached on disk storage.
+        :type: Integer
+        :value: 4
+        
+        Elements will be cached on disk storage.
 
 IDriverException
 ^^^^^^^^^^^^^^^^
@@ -541,25 +1066,170 @@ generates them, but they are actually thrown by the function that causes the exe
 Executor
 --------
 
+
+
 .. class:: IContext()
+    
+    The executor context allows the API functions to interact with the rest of the IgnisHPC system.
+    
+     .. method:: cores()
+     
+        :return: Number of cores assigned to the executor. 
+        :rtype: Integer 
+        
+     .. method:: executors()
+     
+        :return: Number of executors. 
+        :rtype: Integer 
+        
+     .. method:: executorId()
+         
+        :return: Unique identifier of the executor, a number greater than or equal to zero and less than the number
+          of executors.
+        :rtype: Integer 
+        
+        
+    .. method:: threadId()
+         
+        :return: Unique identifier of the current thread, a number greater than or equal to zero and less than the
+         than the number of cores.
+        :rtype: Integer 
+        
+    .. method:: mpiGroup()
+       
+        :return: Returns the mpi group of the executors. 
+        
+    .. method:: props()
+    
+        :return: Driver :class:`IProperties` as :class:`Map` object.
+        :rtype: Map(String, String) 
+        
+    .. method:: vars()
+    
+        (This function may vary depending on the implementation.)
+    
+        :return: Variables sent by :class:`ISource.addParam` as :class:`Map` object. 
+        :rtype: Map(String, Any) 
+    
+
+
+
+.. class:: IReadIterator()
+
+    Transverse through elements of a partition.
+
+    .. method:: hasNext()
+        
+        :return: True if elements remain
+        :rtype: Boolean 
+    
+    
+    .. method:: next()
+
+        :return: Next element.
 
 
 .. class:: IBeforeFunction()
 
+    .. method:: before(context)
+    
+        :param IContext context: The executor context.
+
 
 .. class:: IVoidFunction0()
+
+    .. method:: before(context)
+    
+        :param IContext context: The executor context.
+        
+    .. method:: call(context)
+    
+        :param IContext context: The executor context.
+        
+    .. method:: after(context)
+    
+        :param IContext context: The executor context.
 
 
 .. class:: IVoidFunction()
 
+    .. method:: before(context)
+    
+        :param IContext context: The executor context.
+        
+    .. method:: call(context, v)
+    
+        :param IContext context: The executor context.
+        :param v: Argument
+        
+    .. method:: after(context)
+    
+        :param IContext context: The executor context.
+
 
 .. class:: IVoidFunction2()
+
+    .. method:: before(context)
+    
+        :param IContext context: The executor context.
+        
+    .. method:: call(context, v1, v2)
+    
+        :param IContext context: The executor context.
+        :param v1: Argument 1
+        :param v2: Argument 2
+        
+    .. method:: after(context)
+    
+        :param IContext context: The executor context.
 
 
 .. class:: IFunction0()
 
+    .. method:: before(context)
+    
+        :param IContext context: The executor context.
+        
+    .. method:: call(context)
+    
+        :param IContext context: The executor context.
+        :return: This function must return a value.
+        
+    .. method:: after(context)
+    
+        :param IContext context: The executor context.
+
 
 .. class:: IFunction()
 
+    .. method:: before(context)
+    
+        :param IContext context: The executor context.
+        
+    .. method:: call(context, v)
+    
+        :param IContext context: The executor context.
+        :param v: Argument
+        :return: This function must return a value.
+        
+    .. method:: after(context)
+    
+        :param IContext context: The executor context.
 
 .. class:: IFunction2()
+
+    .. method:: before(context)
+    
+        :param IContext context: The executor context.
+        
+    .. method:: call(context, v1, v2)
+    
+        :param IContext context: The executor context.
+        :param v1: Argument 1
+        :param v2: Argument 2
+        :return: This function must return a value.
+        
+    .. method:: after(context)
+    
+        :param IContext context: The executor context.
+
