@@ -163,7 +163,7 @@ The code we will use as an example is the classic Wordcount application, which c
     text =  worker.textFile("text.txt")
     words = text.flatmap(lambda line: [(word, 1) for word in line.split()])
     # Task 2 - Reduce pairs with same word and obtain totals
-    count = words.reduceBykey(lambda a, b: a + b)
+    count = words.toPair().reduceByKey(lambda a, b: a + b)
     # Print results to file
     count.saveAsTextFile("wordcount.txt")
 
