@@ -345,6 +345,18 @@ of executor processes.
         :return: A parallel collection of strings.
         :rtype: IDataFrame(String)
         :exception IDriverException: An error is generated if the file does not exist or cannot be read.
+		
+		
+    .. method:: plainFile(path, minPartitions, delim)
+
+        Creates a parallel collection by splitting a file using a custom delimiter to create at least ``minPartitions`` partitions.
+        
+        :param String path: File path.
+        :param Integer minPartitions: Minimal number of partitions.
+		:delim String delim: A one-character string.
+        :return: A parallel collection of strings.
+        :rtype: IDataFrame(String)
+        :exception IDriverException: An error is generated if the file does not exist or cannot be read.
 
     .. method:: partitionObjectFile(path, src)
     
@@ -522,12 +534,13 @@ functions defined within this class process the elements in a parallel and distr
         :return: A Dataframe with ``numPartitions``.
         :rtype: IDataFrame(T).
         
-    .. method:: partitionByRandom(numPartitions)
+    .. method:: partitionByRandom(numPartitions, seed)
     
         Creates a new Dataframe with a fixes number of partitions. Elements are randomly distributed among the 
         executors.
 
         :param Integer numPartitions: number of partitions.
+		:param Integer seed: Initializes the random number generator.
         :return: A Dataframe with ``numPartitions``.
         :rtype: IDataFrame(T).
 
@@ -559,6 +572,16 @@ functions defined within this class process the elements in a parallel and distr
         :type src: IFunction(T, R) or ISource.
         :return: A Dataframe with result elements.
         :rtype: IDataFrame(R).
+		
+    .. method:: mapWithIndex(src)
+    
+        Performs a map operation. Like :class:`IDataFrame.map` but the partition index is available as the first argument
+        of the function.
+
+        :param src: Function argument.
+        :type src: IFunction2(Integer, T, R) or ISource.
+        :return: A Dataframe with result elements.
+        :rtype: IDataFrame(R).		
 
     .. method:: filter(src)
     
