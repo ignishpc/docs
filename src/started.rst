@@ -67,6 +67,11 @@ Once the registration is available, we can proceed with the creation of the Igni
 
 The first two repositories are essential for the construction of the base images. The command can be executed in several phases, it is not necessary to specify all the repositories in the same execution. The only restriction is that if you use the ``--full`` parameter, which creates an extra image with all the core repositories, you must have all the cores together. This allows users to create an image that can run Python and C++ codes in the same container.
 
+Finally, IgnisHPC files can be extracted from an image with::
+
+$ docker run --rm -v $(pwd):/target <ignis-image> ignis-export-all /target
+
+The result will not be executable but can be used in application development.
 
 -----------------------------
 Deploying IgnisHPC Containers
@@ -76,7 +81,7 @@ Once all images are created, it is necessary to deploy the containers. IgnisHPC 
 
 Alternatively, IgnisHPC can also be launched as a slurm job in an HPC cluster, docker is replaced by singularity, so a different submitter must be used.
 
-Next we show four examples deploying the containers locally (no manager is needed), and using Nomad, Mesos and Slurm. 
+Next we show examples deploying the containers locally (no manager is needed), and using Nomad, Mesos and Slurm. 
 
 Docker (Only local)
 ^^^^^^^^^^^^^^^^^^^^
@@ -137,7 +142,11 @@ Submitter::
 Slurm
 ^^^^^
 
-The ``ignis-slurm`` submitter can be obtained from the backend repository, compiled from sources or downloaded from a release. This submitter will allow you to launch ignisHPC on a cluster as a non-root user and without docker.
+The ``ignis-slurm`` submitter can be obtained from ``ignishpc/slurm-submitter`` with::
+
+ $ docker run --rm -v $(pwd):/target ignishpc/slurm-submitter ignis-export /target
+
+This submitter will allow you to launch ignisHPC on a cluster as a non-root user and without docker.
 
 IgnisHPC Docker images can be converted to singulairty image files with::
 
@@ -207,3 +216,28 @@ or::
 
 
 When the execution has finished, we can see the result of the execution in ``wordcount.txt`` located in the working directory. If we want to check the execution logs, we must navigate to the scheduler web or use ``docker log`` in case of using docker directly.
+
+
+Launching without Container
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``ignis-submit`` can also be used outside the submiter container, for example where permanent containers are not allowed::
+
+$ docker run --rm -v $(pwd):/target ignishpc/submitter ignis-export /target
+
+This command will create a  ``ignis`` folder in the current directory with everything needed to run the submiter. The ``ignis-deploy`` command configures the submitter container, but when there is no container, we must set the configuration manually.
+The submitter needs a dfs and a scheduler, as ``ignis-deploy`` showed, these can be defined as environment variables or in ``ignis/etc/ignis.conf`` property file.
+
+.. code-block:: sh
+
+	# set current directory as job directory (ignis.dfs.id in ignis.conf)
+	export IGNIS_DFS_ID=$(pwd)
+	# set docker as scheduler (ignis.scheduler.type in ignis.conf)
+	export IGNIS_SCHEDULER_TYPE=docker
+	# set where docker is available (ignis.scheduler.url in ignis.conf)
+	export IGNIS_SCHEDULER_URL=/var/run/docker.sock
+
+
+The above example could be launched as follows::
+
+$ ./ignis/bin/ignis-submit ignishpc/python ./driver.py
