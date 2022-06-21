@@ -67,11 +67,16 @@ Once the registration is available, we can proceed with the creation of the Igni
 
 The first two repositories are essential for the construction of the base images. The command can be executed in several phases, it is not necessary to specify all the repositories in the same execution. The only restriction is that if you use the ``--full`` parameter, which creates an extra image with all the core repositories, you must have all the cores together. This allows users to create an image that can run Python and C++ codes in the same container.
 
+
 -----------------------------
 Deploying IgnisHPC Containers
 -----------------------------
 
-Once all images are created, it is necessary to deploy the containers. IgnisHPC jobs are launched using the submitter module, but to use a cluster it requires a resource and scheduler manager such as Nomad or Mesos. Next we show three examples deploying the containers locally (no manager is needed), and using Nomad and Mesos. 
+Once all images are created, it is necessary to deploy the containers. IgnisHPC jobs are launched using the submitter module, but to use a cluster it requires a resource and scheduler manager such as Nomad or Mesos. 
+
+Alternatively, IgnisHPC can also be launched as a slurm job in an HPC cluster, docker is replaced by singularity, so a different submitter must be used.
+
+Next we show four examples deploying the containers locally (no manager is needed), and using Nomad, Mesos and Slurm. 
 
 Docker (Only local)
 ^^^^^^^^^^^^^^^^^^^^
@@ -129,6 +134,23 @@ Submitter::
 
 \* The working directory must be available on all nodes via NFS (Network File System) or a DFS (Distributed File System). (Only required for working with files)
 
+Slurm
+^^^^^
+
+The ``ignis-slurm`` submitter can be obtained from the backend repository, compiled from sources or downloaded from a release. This submitter will allow you to launch ignisHPC on a cluster as a non-root user and without docker.
+
+IgnisHPC Docker images can be converted to singulairty image files with::
+
+ $ ignis-deploy images singularity [--host] ignishpc/full ignis_full.sif
+
+The basic syntax of ``ignis-slurm`` is the same as the later shown ``ignis-submit``, but a first parameter with job-time must be passed to be requested to slurm. The time can be specified in any format supported by slurm. 
+For example, a 10 minute job should start with::
+
+  $ ignis-slurm 00:10:00 ....
+
+In addition, help text can be displayed using::
+
+  $ ignis-slurm --help
 
 -----------------------
 Launching the first job
