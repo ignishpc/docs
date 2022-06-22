@@ -575,7 +575,7 @@ functions defined within this class process the elements in a parallel and distr
 		
     .. method:: mapWithIndex(src)
     
-        Performs a map operation. Like :class:`IDataFrame.map` but the partition index is available as the first argument
+        Performs a map operation. Like :class:`IDataFrame.map` but global index of the element is available as the first argument
         of the function.
 
         :param src: Function argument.
@@ -625,7 +625,7 @@ functions defined within this class process the elements in a parallel and distr
     .. method:: mapPartitionsWithIndex(src, preservesPartitioning)
     
         Performs a specialized map that is called only once for each partition, elements can be accessed using an 
-        iterator. Like :class:`IDataFrame.mapPartitions` but the partition index is available as the first argument
+        iterator. Like :class:`IDataFrame.mapPartitions` but global index of the partition is available as the first argument
         of the function.
     
         :param src: Function argument.
