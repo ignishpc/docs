@@ -63,9 +63,10 @@ Once the registration is available, we can proceed with the creation of the Igni
     https://github.com/ignishpc/dockerfiles.git \
     https://github.com/ignishpc/backend.git \
     https://github.com/ignishpc/core-cpp.git \
-    https://github.com/ignishpc/core-python.git
+    https://github.com/ignishpc/core-python.git \
+	https://github.com/ignishpc/core-go.git
 
-The first two repositories are essential for the construction of the base images. The command can be executed in several phases, it is not necessary to specify all the repositories in the same execution. The only restriction is that if you use the ``--full`` parameter, which creates an extra image with all the core repositories, you must have all the cores together. This allows users to create an image that can run Python and C++ codes in the same container.
+The first two repositories are essential for the construction of the base images. The command can be executed in several phases, it is not necessary to specify all the repositories in the same execution. The only restriction is that if you use the ``--full`` parameter, which creates an extra image with all the core repositories, you must have all the cores together. This allows users to create an image that can run Python, C++ and Go codes in the same container.
 
 Finally, IgnisHPC files can be extracted from an image with::
 
